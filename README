@@ -1,0 +1,78 @@
+	Implementare temei a durat in jur de 14 ore, timp in care am invatat
+sa utilizez cu usurinta arborii multicai, ce inseamna acestia si cum
+se pot folosii. De asemenea mi-am mai deschis orizonturile in lumea
+Machine Learning-ului prin aceste taskuri ce se regasesc ca fiind
+utile la inceput in acest topic. 
+	In cadrul taskului 1 am avut de implementat arborele de joc
+sub forma jocului Connect-4. In structura mea de arbore multicai
+am de fiecare data cate un pointer head si tail, pentru a retine 
+cu usurinta primul dar si ultimul element din lista. Nodurile 
+au in structura lor matricea alocata dinamic, reprezentand starea
+jocului, jucatorul ce a facut miscarea, 'R' sau 'B', nivelul pe
+care se afla de la starea initiala, pointer catre lista de copii
+dar si pointer pentru vecini. Functia ce mai reprezentativa a fost
+add_matrix_node. Aceasta primeste trie_node-ul in care urmeaza a se
+face inserarea nodurilor, int k ce inseamna coloana pe care se va incerca
+inserarea caracterului 'R' sau 'B', dimensiunile matricei, matricea parinte,
+si nivelul actual pe care ne aflam fata de pozitia initiala. Adaugarea 
+nodurilor se face in maniera recursiva, plecandu-se din main cu acel for 
+pentru a da ca parametru pentru prima data k-ul. Dupa care in functie se
+testeaza daca se poate face inseararea(suntem intr-un stadiu neterminal al
+jocului ), se aloca memorie, se copiaza matricea veche si se incearca
+inlocuirea specifica a caracterului dupa care se intra in recursivitate,
+recursivitate din care se iese in momentul in care se ajunge intr-o 
+stare terminala a jocului. Daca vreodata se intampla sa nu avem totusi 
+pe o coloana k elementul '-', desi nu ne aflam pe o stare terminala, 
+functia va continua, dar trebuie eliberat de memorie nodul. Functia
+test_matrix testeaza daca cumva matricea se afla intr-o stare terminala
+sau nu. Functia de print este realizata intr-o maniera recursiva, se intra
+in copii dupa care la revenirea din recursivitate se intra in vecini. Taburile
+cerute sunt puse in functie de nivel. Functiile de destroy_list si destroy_trie
+se ocupa de stergerea nodurilor,a listelor de copii,respectiv a intregului
+arbore multicai.
+	In taskul 2 am trecut la arborele Minimax. La prima incercare primeam
+timeout, datorita faptului ca treceam de multe ori prin fisierul de intrare,
+care avea dimensiuni foarte mari la un moment dat in teste. Pentru asta am 
+folosit un vector de structuri tools de tip nodes, alocat dinamic, pentru a
+pastra informatia indexat. Aceasta are in ea value, valoarea nodului, type,
+care este 0 sau 1, depinde daca este nod frunza sau nod copil, si int sum, 
+care calculeaza suma valorilor nodurilor copii anterioare nodului curent.
+Functiile max_of_trie respectiv min_of_trie calculeaza minimul si maximul
+dintr-o lista de copii. Functia de adaugare a nodurilor primeste ca 
+parametru, pe langa un node trie_node* , vectorul de structuri, k reprezinta
+nivelul, iar s reprezinta indexul din tools la care vreau sa ma aflu. Dupa 
+adaugarea nodului in lista in O(1) folosindu-se tail-ul, se adauga si nodurile
+din lista de copii, modificand coeficientul s cu suma nodurilor copii 
+anterioare + i-ul care face parcurgerea de la 0 la valuarea nodului curent,
+pentru a ajunge in tools exact la informatia dorita. La revenirea din 
+recursivitate, se inlocuieste vechiul value care insemna numarul de copii,
+cu maximul sau minimul(in fct de nivel) din lista de copii, copii ce au si ei
+valori aflate in functie de frunze. Functiile de print si eliberare a memoriei
+sunt aceleasi ca cele de la taskul1.
+	In taskul 3 am aplicat aceeiasi metoda ca la taskul 2 doar ca am
+particularizat pentru alpha-beta prunning, adica am adus o imbunatatire.
+Astfel, pe langa cele 2 functii max si min ce determina min/max dintre 2 
+valori, in cadrul functiei de adaugare a nodurilor, am trimis ca parametru
+vechile valori aplha si beta ce vor fii folosite ulterior. De mentionat ca fata
+de taskul2, structura difera prin adaugarea a doua noi campuri int, alpha
+si beta. In functia de adaugare, valorile alpha si beta ale nodului adaugat
+sunt initial cele primite ca parametru, adica ale nodului parinte. Ulterior,
+dupa fiecare adaugare a unui nod copil, se modifica valorile aplha si beta
+(in functie de nivel). La urmatoarele adaugari, se testeaza daca aplha < 
+beta pentru a face alte adaugari, altfel se revine, deoarece nu este nevoie 
+de o adaugare a altui nod. Apoi, la terminarea adaugarii nodurilor copil,
+se actualizeaza si valoarea nodului prin functiile max_of_trie si min_of_trie.
+Celelalte functii de afisare si eliberare a memoriei sunt similare taskului 2.
+	La bonus am avut de "generalizat" taskul2. Astfel, am avut cateva diferente
+minore. In structurile nodes si list_node3, in cadrul valorilor, am pus vectori
+int alocati dinamic, deoarece memoria lor si implicit numarul de valori intregi
+este dat de numarul de jucatori. Functiile min_of_trie si max_of_trie
+returneaza vectori, nu valori, comparand doar valoriile din pozitia 0. O alta
+schimbare adusa taskului 2 a fost aceea ca valorile nodului adaugat in functie
+de nivel a fost diferita: minim pentru k%n != 0 si maxim contrar.
+(returnandu-se bineinteles vectori). Afisarea este diferita deoarece este alt
+format dar este pe acelasi principiu. In plus la functia de delete_list_bonus
+mai exista un free pentru eliberare memoriei alocata vectorului de valori.
+	A fost o tema foarte interesanta care ne-a pus la incercarea gandirea si
+algoritmica, dar care a consolidat aptitudinile noastre si ne-a aratat cateva
+principii de Machine Learning.
